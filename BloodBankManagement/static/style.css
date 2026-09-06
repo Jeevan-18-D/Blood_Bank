@@ -1,0 +1,524 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #222;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: white;
+    padding: 25px 15px;
+    border-right: 1px solid #eee;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 15px 30px;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    background: #e63946;
+    color: white;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.logo span {
+    font-size: 11px;
+    color: gray;
+}
+
+.menu-title {
+    font-size: 11px;
+    color: gray;
+    padding: 10px 15px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.nav-btn {
+    border: none;
+    background: transparent;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    text-align: left;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    font-size: 14px;
+    color: #666;
+}
+
+.nav-btn:hover {
+    background: #fff1f2;
+    color: #e63946;
+}
+
+.nav-btn.active {
+    background: #e63946;
+    color: white;
+}
+
+
+/* MAIN CONTENT */
+
+.main-content {
+    flex: 1;
+    padding: 35px;
+}
+
+.topbar {
+    margin-bottom: 30px;
+}
+
+.topbar p {
+    color: gray;
+    margin-bottom: 5px;
+}
+
+.topbar h1 {
+    font-size: 30px;
+}
+
+
+/* DASHBOARD */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.04);
+}
+
+.stat-icon {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 15px;
+
+    background: #fff1f2;
+
+    color: #e63946;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.stat-card p {
+    font-size: 13px;
+    color: gray;
+}
+
+.stat-card h2 {
+    font-size: 28px;
+    margin-top: 5px;
+}
+
+
+/* PAGE CARD */
+
+.page-card,
+.form-card {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.04);
+}
+
+.page-card h2 {
+    margin-bottom: 10px;
+}
+
+.page-card > p {
+    color: gray;
+    margin-bottom: 25px;
+}
+
+
+/* BUTTONS */
+
+.primary-btn {
+    background: #e63946;
+
+    color: white;
+
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+.secondary-btn {
+    background: white;
+
+    border: 1px solid #ddd;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: #fff1f2;
+
+    color: #e63946;
+
+    border: none;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.approve-btn {
+    background: #e7fff4;
+
+    color: green;
+
+    border: none;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+/* TABLE */
+
+.table-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+
+    padding: 15px;
+
+    font-size: 12px;
+
+    color: gray;
+
+    border-bottom: 1px solid #eee;
+}
+
+td {
+    padding: 15px;
+
+    border-bottom: 1px solid #eee;
+
+    font-size: 14px;
+}
+
+
+/* BADGES */
+
+.blood-badge {
+    background: #fff1f2;
+
+    color: #e63946;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    font-size: 12px;
+}
+
+
+/* BLOOD STOCK */
+
+.blood-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+.blood-stock-card {
+    border: 1px solid #eee;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.blood-circle {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    background: #e63946;
+
+    color: white;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+}
+
+.blood-stock-card p {
+    color: gray;
+    font-size: 12px;
+}
+
+
+/* HOSPITALS */
+
+.hospital-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.hospital-card {
+    border: 1px solid #eee;
+
+    padding: 25px;
+
+    border-radius: 15px;
+}
+
+.hospital-card i {
+    font-size: 30px;
+
+    color: #e63946;
+
+    margin-bottom: 15px;
+}
+
+.hospital-card p {
+    color: gray;
+
+    margin-top: 8px;
+}
+
+
+/* FORM */
+
+.form-card {
+    max-width: 900px;
+}
+
+.form-card > p {
+    color: gray;
+
+    margin-bottom: 25px;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 13px;
+}
+
+input,
+select,
+textarea {
+    padding: 13px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #e63946;
+}
+
+.full-width {
+    margin-top: 20px;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+.form-buttons {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 80px;
+    }
+
+    .sidebar span,
+    .logo h2,
+    .menu-title {
+        display: none;
+    }
+
+    .nav-btn {
+        justify-content: center;
+    }
+
+    .dashboard-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .blood-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .hospital-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .dashboard-grid,
+    .blood-grid,
+    .form-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
