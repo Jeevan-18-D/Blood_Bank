@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BloodLink | Blood Bank Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+
+            <div>
+                <h2>BloodLink</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <p class="menu-title">MAIN MENU</p>
+
+        <nav>
+
+            <button class="nav-btn active"
+                    onclick="showDashboard(this)">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Dashboard</span>
+            </button>
+
+            <button class="nav-btn"
+                    onclick="showDonors(this)">
+                <i class="fa-solid fa-user"></i>
+                <span>Donors</span>
+            </button>
+
+            <button class="nav-btn"
+                    onclick="showReceivers(this)">
+                <i class="fa-solid fa-hospital-user"></i>
+                <span>Receivers</span>
+            </button>
+
+            <button class="nav-btn"
+                    onclick="showBloodStock(this)">
+                <i class="fa-solid fa-droplet"></i>
+                <span>Blood Stock</span>
+            </button>
+
+            <button class="nav-btn"
+                    onclick="showHospitals(this)">
+                <i class="fa-solid fa-hospital"></i>
+                <span>Hospitals</span>
+            </button>
+
+            <button class="nav-btn"
+                    onclick="showEmployees(this)">
+                <i class="fa-solid fa-user-nurse"></i>
+                <span>Employees</span>
+            </button>
+
+            <button class="nav-btn"
+                    onclick="showRequests(this)">
+                <i class="fa-solid fa-file-medical"></i>
+                <span>Blood Requests</span>
+            </button>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p>Welcome back 👋</p>
+                <h1 id="page-title">Dashboard Overview</h1>
+            </div>
+        </header>
+
+        <section id="content"></section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+function setActive(button) {
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    if (button) {
+        button.classList.add("active");
+    }
+}
+
+
+function showDashboard(button) {
+
+    setActive(button);
+
+    document.getElementById("page-title").innerText =
+        "Dashboard Overview";
+
+    fetch("/dashboard")
+        .then(response => response.json())
+        .then(data => {
+
+            document.getElementById("content").innerHTML = `
+
+                <div class="dashboard-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div>
+                            <p>Total Donors</p>
+                            <h2>${data.donors}</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-hospital-user"></i>
+                        </div>
+
+                        <div>
+                            <p>Total Receivers</p>
+                            <h2>${data.receivers}</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-hospital"></i>
+                        </div>
+
+                        <div>
+                            <p>Hospitals</p>
+                            <h2>${data.hospitals}</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+
+                        <div>
+                            <p>Blood Units</p>
+                            <h2>${data.blood_units}</h2>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="page-card">
+                    <h2>Blood Bank Management System</h2>
+
+                    <p>
+                        Manage donors, receivers, hospitals,
+                        employees, blood stock and blood requests
+                        from one dashboard.
+                    </p>
+
+                    <button class="primary-btn"
+                            onclick="showAddDonor()">
+                        <i class="fa-solid fa-plus"></i>
+                        Add New Donor
+                    </button>
+                </div>
+
+            `;
+        });
+}
+
+
+function showDonors(button) {
+
+    setActive(button);
+
+    document.getElementById("page-title").innerText =
+        "Donor Management";
+
+    fetch("/donors")
+        .then(response => response.json())
+        .then(data => {
+
+            let rows = "";
+
+            data.forEach(donor => {
+
+                rows += `
+                    <tr>
+                        <td>#D${donor.donor_id}</td>
+                        <td>${donor.name}</td>
+                        <td>${donor.age}</td>
+                        <td>
+                            <span class="blood-badge">
+                                ${donor.blood_group}
+                            </span>
+                        </td>
+                        <td>${donor.phone}</td>
+
+                        <td>
+                            <button class="delete-btn"
+                                onclick="deleteDonor(${donor.donor_id})">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById("content").innerHTML = `
+
+                <div class="page-card">
+
+                    <div class="table-header">
+
+                        <div>
+                            <h2>All Donors</h2>
+                            <p>Registered blood donors</p>
+                        </div>
+
+                        <button class="primary-btn"
+                                onclick="showAddDonor()">
+                            + Add Donor
+                        </button>
+
+                    </div>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Blood Group</th>
+                                    <th>Phone</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                ${rows}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+            `;
+        });
+}
+
+
+function showAddDonor() {
+
+    document.getElementById("page-title").innerText =
+        "Add New Donor";
+
+    document.getElementById("content").innerHTML = `
+
+        <div class="form-card">
+
+            <h2>Register New Donor</h2>
+            <p>Enter donor details below.</p>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>Name</label>
+                    <input id="name"
+                           placeholder="Enter name">
+                </div>
+
+                <div class="input-group">
+                    <label>Age</label>
+                    <input id="age"
+                           type="number"
+                           placeholder="Enter age">
+                </div>
+
+                <div class="input-group">
+                    <label>Gender</label>
+
+                    <select id="gender">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Blood Group</label>
+
+                    <select id="blood_group">
+                        <option value="">Select</option>
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Phone</label>
+                    <input id="phone"
+                           placeholder="Phone number">
+                </div>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input id="email"
+                           placeholder="Email">
+                </div>
+
+            </div>
+
+            <div class="input-group full-width">
+                <label>Address</label>
+
+                <textarea id="address"
+                          placeholder="Address"></textarea>
+            </div>
+
+            <div class="form-buttons">
+
+                <button class="secondary-btn"
+                        onclick="showDonors()">
+                    Cancel
+                </button>
+
+                <button class="primary-btn"
+                        onclick="addDonor()">
+                    Register Donor
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+function addDonor() {
+
+    let data = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value,
+        gender: document.getElementById("gender").value,
+        blood_group:
+            document.getElementById("blood_group").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+        address: document.getElementById("address").value
+    };
+
+    fetch("/donors", {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert(result.message);
+        showDonors();
+    });
+}
+
+
+function deleteDonor(id) {
+
+    if (!confirm("Delete this donor?")) {
+        return;
+    }
+
+    fetch("/donors/" + id, {
+        method: "DELETE"
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert(result.message);
+        showDonors();
+    });
+}
+
+
+function showReceivers(button) {
+
+    setActive(button);
+
+    document.getElementById("page-title").innerText =
+        "Receiver Management";
+
+    fetch("/receivers")
+        .then(response => response.json())
+        .then(data => {
+
+            let rows = "";
+
+            data.forEach(receiver => {
+
+                rows += `
+                    <tr>
+                        <td>#R${receiver.receiver_id}</td>
+                        <td>${receiver.name}</td>
+                        <td>
+                            <span class="blood-badge">
+                                ${receiver.blood_group_required}
+                            </span>
+                        </td>
+                        <td>${receiver.hospital_name || "-"}</td>
+                        <td>${receiver.phone}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById("content").innerHTML = `
+
+                <div class="page-card">
+
+                    <h2>Blood Receivers</h2>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Blood Required</th>
+                                    <th>Hospital</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                ${rows}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+            `;
+        });
+}
+
+
+function showBloodStock(button) {
+
+    setActive(button);
+
+    document.getElementById("page-title").innerText =
+        "Blood Stock";
+
+    fetch("/bloodstock")
+        .then(response => response.json())
+        .then(data => {
+
+            let cards = "";
+
+            data.forEach(stock => {
+
+                cards += `
+                    <div class="blood-stock-card">
+
+                        <div class="blood-circle">
+                            ${stock.blood_group}
+                        </div>
+
+                        <div>
+                            <h2>${stock.available_units}</h2>
+                            <p>Units Available</p>
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            document.getElementById("content").innerHTML = `
+                <div class="page-card">
+
+                    <h2>Blood Availability</h2>
+
+                    <div class="blood-grid">
+                        ${cards}
+                    </div>
+
+                </div>
+            `;
+        });
+}
+
+
+function showHospitals(button) {
+
+    setActive(button);
+
+    document.getElementById("page-title").innerText =
+        "Hospitals";
+
+    fetch("/hospitals")
+        .then(response => response.json())
+        .then(data => {
+
+            let cards = "";
+
+            data.forEach(hospital => {
+
+                cards += `
+                    <div class="hospital-card">
+
+                        <i class="fa-solid fa-hospital"></i>
+
+                        <h3>
+                            ${hospital.hospital_name}
+                        </h3>
+
+                        <p>${hospital.city}</p>
+                        <p>${hospital.phone}</p>
+
+                    </div>
+                `;
+            });
+
+            document.getElementById("content").innerHTML = `
+                <div class="page-card">
+
+                    <h2>Connected Hospitals</h2>
+
+                    <div class="hospital-grid">
+                        ${cards}
+                    </div>
+
+                </div>
+            `;
+        });
+}
+
+
+function showEmployees(button) {
+
+    setActive(button);
+
+    document.getElementById("page-title").innerText =
+        "Employees";
+
+    fetch("/employees")
+        .then(response => response.json())
+        .then(data => {
+
+            let rows = "";
+
+            data.forEach(employee => {
+
+                rows += `
+                    <tr>
+                        <td>#E${employee.employee_id}</td>
+                        <td>${employee.name}</td>
+                        <td>${employee.role}</td>
+                        <td>${employee.shift}</td>
+                        <td>
+                            ${employee.hospital_name || "-"}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById("content").innerHTML = `
+                <div class="page-card">
+
+                    <h2>Employees</h2>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Shift</th>
+                                    <th>Hospital</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                ${rows}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+            `;
+        });
+}
+
+
+function showRequests(button) {
+
+    setActive(button);
+
+    document.getElementById("page-title").innerText =
+        "Blood Requests";
+
+    fetch("/requests")
+        .then(response => response.json())
+        .then(data => {
+
+            let rows = "";
+
+            data.forEach(request => {
+
+                rows += `
+                    <tr>
+
+                        <td>#${request.request_id}</td>
+                        <td>${request.receiver_name}</td>
+                        <td>${request.hospital_name}</td>
+
+                        <td>
+                            <span class="blood-badge">
+                                ${request.blood_group}
+                            </span>
+                        </td>
+
+                        <td>${request.units_required}</td>
+
+                        <td>${request.status}</td>
+
+                        <td>
+
+                            ${
+                                request.status === "Pending"
+                                ? `
+                                    <button class="approve-btn"
+                                        onclick="approveRequest(${request.request_id})">
+                                        Approve
+                                    </button>
+                                  `
+                                : "Completed"
+                            }
+
+                        </td>
+
+                    </tr>
+                `;
+            });
+
+            document.getElementById("content").innerHTML = `
+
+                <div class="page-card">
+
+                    <h2>Blood Requests</h2>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Receiver</th>
+                                    <th>Hospital</th>
+                                    <th>Blood</th>
+                                    <th>Units</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                ${rows}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+            `;
+        });
+}
+
+
+function approveRequest(id) {
+
+    if (!confirm("Approve this blood request?")) {
+        return;
+    }
+
+    fetch("/requests/" + id + "/approve", {
+        method: "PUT"
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert(result.message);
+        showRequests();
+    });
+}
+
+
+showDashboard();
+
+</script>
+
+</body>
+</html>
